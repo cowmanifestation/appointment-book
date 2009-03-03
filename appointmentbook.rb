@@ -20,9 +20,21 @@ class Schedule
       events_for(date) << text
     end
   end
-  
-  def remove(date)
-  	events_for(date).delete
+    
+  def clear(date)
+  	@store.transaction do
+  		events_for(date).clear
+		end
+	end
+	
+	#NOTE:
+	#when writing function calls, consider the kinds of objects you are creating and how you can use them.
+	
+	#remove a single event
+	def remove(date, index)
+		@store.transaction do
+			events_for(date).delete_at(index)
+		end
 	end
 
   def each
