@@ -20,6 +20,10 @@ class Schedule
       events_for(date) << text
     end
   end
+  
+  def remove(date)
+  	events_for(date).delete
+	end
 
   def each
     @store.transaction do
