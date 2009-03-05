@@ -1,0 +1,11 @@
+    *  Problem: At the moment, the appointment book program saves data in a default file (unless you tell it to create a different one), but it doesn't save it as the new schedule object that you create.  For instance, in one session I type "cows = Schedule.new", then enter some events for cows.  Then I sign off, and sign on later, and create a new Schedule object, ducks.  But when I call up the events for ducks, it gives me all the events that I added for cows, as well!  And it doesn't recognize cows as a schedule object anymore.
+
+    * Solution: I would like to have the default setting be to save a file by the name of the new Schedule object, instead of having one single default file.  (I know this happens because I'm doing it in irb partly.  If I write the new schedule object into an actual file, it will remember it.  But I'd like to be able to save it from irb, because of course this is a command-line application.)  Or, if it uses a default file, to save each Schedule object separately, so that it doesn't save all the values together in a single hash and return all the events ever entered into the file.
+
+    * For the above problem, if I wanted to include something in initialize that would tell it to save a file under the name of the newly created Schedule object, how would I refer to that object? (i.e. when you open irb and require "appointmentbook", then say for instance "cows = Schedule.new".  How can you get it to save a file "cows.store", and then open that file and access that data later?)
+
+Problems
+
+   1. How to save each new Schedule object in its own default file
+   2. How to open that file later to view/save things in
+

@@ -1,14 +1,15 @@
 require "date"
 require "pstore"
+require "highline"
 
 class Schedule
-	
+
+
   include Enumerable
 
   def initialize
-  	print "Welcome to Chenoa's scheduling program.  Please enter a name for your file: "
-		@name = gets.chomp
-		file = "#{@name}.store"
+  	hiline = Highline.new
+  	hiline.ask("What is the name of your file? ") { |name| file = "#{name}.store"}
     @store = PStore.new(file)
   end
 
@@ -29,7 +30,7 @@ class Schedule
   		events_for(date).clear
 		end
 	end
-	
+
 	#remove a single event
 	def remove(date, index)
 		@store.transaction do
