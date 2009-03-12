@@ -21,6 +21,10 @@ class Schedule
       events_for(date) << text
     end
   end
+  
+  def empty?
+  	@store.roots.empty?
+	end
     
   def clear(date)
   	@store.transaction do
