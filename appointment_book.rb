@@ -25,6 +25,13 @@ class Schedule
   def empty?
   	@store.roots.empty?
 	end
+	
+	#this doesn't work
+	def delete(date)
+		@store.transaction do
+			@store.delete[date]
+		end
+	end
     
   def clear(date)
   	@store.transaction do
