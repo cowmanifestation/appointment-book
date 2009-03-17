@@ -11,7 +11,7 @@ class Schedule
   end
 
   def [](date)
-    @store.transaction do 
+    @store.transaction do
       events_for(date)
     end
   end
@@ -25,17 +25,11 @@ class Schedule
   def empty?
   	@store.roots.empty?
 	end
-	
-	#this doesn't work
-	def delete(date)
-		@store.transaction do
-			@store.delete[date]
-		end
-	end
-    
-  def clear(date)
+  
+	#remove entire date  
+  def clear_date(date)
   	@store.transaction do
-  		events_for(date).clear
+  		@store.delete(to_date(date))
 		end
 	end
 
@@ -48,7 +42,7 @@ class Schedule
 
   def each
     @store.transaction do
-      @store.roots.each { |date| yield([date, @store[date]]) }
+      @store.roots.sort.each { |date| yield([date, @store[date]]) }
     end
   end
 
