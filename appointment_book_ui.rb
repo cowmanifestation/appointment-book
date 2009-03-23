@@ -31,15 +31,18 @@ end
 def create_new
 	
 	  date = ask("Date? ") { |q| q.validate = %r{\A\d\d?/\d\d?/\d{4}\Z} }
+	  #is it bad to create a variable here with the same name as a method from appointment_book.rb?
+	  #it seems to work ok...
 		event = ask("What? ") 
 		time = ask("When? ")
 		location = ask("Where? ")
 		details = ask("Details? ")
 		
-		@sch.event(date, "Event: " + event + "\nTime: " + time +
-		     "\nLocation: " + location + "\nDetails: " + details)
+		@sch.event(date, "\tEvent: " + event + "\n\tTime: " + time +
+		     "\n\tLocation: " + location + "\n\tDetails: " + details)
 		
-		puts "\nYour entry: #{@sch[date]}"
+		puts "\n\nYour entry: #{date}\n"
+		@sch[date].each_with_index {|event, index| puts "#{index}: \n#{event}"}
 		
 		if agree("Edit? ", true)
 			edit
@@ -60,7 +63,8 @@ def edit
 				end
 				
 				menu.choice :single_event do
-					puts "flying monkeys."
+					@sch[date].each_with_index {|event, index| puts "#{index}: \n#{event}"}
+					#@sch[date(index)] = ask "Which event?" q validate (integer) or something like this
 				end
 				
 			end
@@ -69,6 +73,10 @@ def edit
 		
 		menu.choice :change do
 			puts "peregrine falcon"
+		end
+		
+		menu.choice :back do
+			main
 		end
 		
 	end
@@ -86,7 +94,9 @@ def view
 		
 		menu.choice :single_date do
 			date = ask("Date? ")
-			puts @sch[date]
+			
+			#how do I print this out with the event details indented? like puts "#{index}: #{three spaces} event /n #{five spaces} details...."
+			@sch[date].each_with_index {|event, index| puts "#{index}: \n#{event}"}
 		end
 		
 	end
@@ -106,11 +116,11 @@ def view
 end
 
 
-say "Welcome To Chenoa's Appointment Book"
+say "\nWelcome To Chenoa's Appointment Book"
 
 @sch = Schedule.new(ARGV[0] || "schedule.store")
 
-say "Your schedule is #{@sch}"
+say "\nYour schedule: \n\n#{@sch}\n\n"
 
 main
 
