@@ -22,6 +22,12 @@ class Schedule
     end
   end
   
+  def event_update(date, index, text)
+  	@store.transaction do
+  		events_for(date)[index].replace(text)
+		end
+	end
+  
   def empty?
   	@store.roots.empty?
 	end
