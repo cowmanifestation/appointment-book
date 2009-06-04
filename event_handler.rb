@@ -7,13 +7,13 @@ class Event
     @events ||= {}
     @events[[name,date]] = new(name, date)
   end
+  
+  #to save a new event from irb, make a function to dump them in a yaml file
 
   def initialize(name, date)
     @name = name
     @date = date
   end
-
-  attr_accessor :name, :date, :where, :desc
 
   def self.all
     (@events ||= {}).values
@@ -22,6 +22,24 @@ class Event
   def self.on_date(date)
     all.select { |e| e.date == date }
   end
+  
+  def self.class_def(name, &block)
+  	(class << self; self; end).send(:define_method, name, &block)
+	end
+  
+  [:name, :date, :desc, :place, :time].each do |attrib|
+  	attr_accessor attrib
+  	
+  	class_def "#{attrib}s" do
+  		all.map { |e| e.send(attrib) }
+		end
+		
+		
+		class_def "find_by_#{attrib}" do |value|
+			all.select  { |e| e.send(attrib) =~ value }
+		end
+		
+	end
 
   def description(desc=nil)
     if desc
@@ -31,16 +49,24 @@ class Event
     end
   end
 
-  def where(where=nil)
+  def place(where=nil)
     if where
       @where = where
     else
       @where
     end
   end
+  
+  def time(time=nil)
+  	if time
+  		@time = time
+		else
+			@time
+		end
+	end
 
   def to_s
-    "What: #{@name}\nWhen: #{@date}\nWhere: #{@where}\nDetails: #{@desc}"
+    "\nWhat: #{@name}\nWhen: #{@date} at #{@time}\nWhere: #{@where}\nDetails: #{@desc}\n\n"
   end
 
 end

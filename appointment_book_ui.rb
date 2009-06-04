@@ -3,6 +3,7 @@ require "highline/import"
 $terminal = HighLine.new($stdin, $stdout, :auto)
 require "appointment_book"
 
+
 def main
 	
 	choose do |menu|
@@ -49,6 +50,7 @@ def create_new
 	main
 end
 
+
 def edit
 	choose do |menu|	
 	
@@ -73,13 +75,13 @@ def edit
 			end
 				
 		end
-		
+	
 		menu.choice :change do
 			
 			choose do |menu|
 				
 				menu.choice :replace do
-					
+
 					date = ask("Date? ")
 					@sch[date].each_with_index {|event, index| puts "#{index}: \n#{event}"}
 					index = ask("Which event?   ", Integer) { |q| q.in = 0..@sch[date].length.to_i }
@@ -103,20 +105,11 @@ def edit
 						edit
 					end
 					
-				end
+				end	
 				
-=begin				
-				menu.choice :add do
-					
-					date = ask("Date? ")
-					@sch[date].each_with_index {|event, index| puts "#{index}: \n#{event}"}
-					index = ask("Which event?   ", Integer) { |q| q.in = 0..@sch[date].length.to_i }
-					say "#{@sch[date][index]}"
-=end					
-					
-					
-			
-			main
+				main
+				
+			end
 			
 		end
 		
@@ -128,6 +121,7 @@ def edit
 	main
 end
 
+
 def view
 	choose do |menu|
 		menu.prompt = "Please select: "
@@ -137,11 +131,16 @@ def view
 		end
 		
 		menu.choice :single_date do
-			
 			date = ask("Date? ")
 			@sch[date].each_with_index {|event, index| say "#{index}: \n#{event}"}
-			
 		end
+
+=begin		
+		menu.choice :today do
+			date = Date.today.strptime(str, "%m/%d/%Y")
+			@sch[date].each_with_index {|event, index| say "#{index}: \n#{event}"}
+		end
+=end
 		
 		menu.choice :back do
 			main
@@ -176,5 +175,3 @@ say "\nWelcome To Chenoa's Appointment Book"
 say "\nYour schedule: \n\n#{@sch}\n\n"
 
 main
-
-
