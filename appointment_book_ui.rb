@@ -29,10 +29,20 @@ def main
 	
 end
 
+def ask_date
+	date = ask("Date? (m(m)/d(d)/yyyy)")
+	if date =~ /\A[0-1][0-9]\/[0-3][0-9]\/\d{4}\Z/
+	 date
+	else
+		say "Something's wrong."
+		ask_date
+	end
+end
+
 
 def create_new
 	
-	  date = ask("Date? ") { |q| q.validate = %r{\A\d\d?/\d\d?/\d{4}\Z} }
+	  date = ask_date
 		event = ask("What? ") 
 		time = ask("When? ")
 		location = ask("Where? ")
@@ -55,7 +65,7 @@ def edit
 	choose do |menu|	
 	
 		menu.choice :delete do
-			date = ask("Date? ")
+			date = ask_date
 			choose do |menu|
 				
 				menu.choice :all do
@@ -82,7 +92,7 @@ def edit
 				
 				menu.choice :replace do
 
-					date = ask("Date? ")
+					date = ask_date
 					@sch[date].each_with_index {|event, index| puts "#{index}: \n#{event}"}
 					index = ask("Which event?   ", Integer) { |q| q.in = 0..@sch[date].length.to_i }
 					say "#{@sch[date][index]}"
@@ -131,16 +141,15 @@ def view
 		end
 		
 		menu.choice :single_date do
-			date = ask("Date? ")
+			date = ask_date
 			@sch[date].each_with_index {|event, index| say "#{index}: \n#{event}"}
 		end
-
-=begin		
+	
 		menu.choice :today do
-			date = Date.today.strptime(str, "%m/%d/%Y")
+			d = Time.now
+			date = d.strftime("%m/%d/%Y")
 			@sch[date].each_with_index {|event, index| say "#{index}: \n#{event}"}
 		end
-=end
 		
 		menu.choice :back do
 			main
