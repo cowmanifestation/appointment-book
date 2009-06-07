@@ -39,6 +39,9 @@ def ask_date
 	end
 end
 
+def display_date(date)
+	@sch[date].each_with_index {|event, index| say "#{index}: \n#{event}"}
+end
 
 def create_new
 	
@@ -51,7 +54,7 @@ def create_new
 		@sch.event(date, T(:event, binding))
 		
 		say "\n\nYour entry: #{date}\n"
-		@sch[date].each_with_index {|event, index| say "#{index}: \n#{event}"}
+		display_date(date)
 		
 		if agree("Edit? ", true)
 			edit
@@ -73,7 +76,7 @@ def edit
 				end
 				
 				menu.choice :single_event do
-					@sch[date].each_with_index {|event, index| puts "#{index}: \n#{event}"}
+					display_date(date)
 					index = ask("Which event?   ", Integer) { |q| q.in = 0..@sch[date].length.to_i }
 					@sch.remove(date, index)
 				end
@@ -93,7 +96,7 @@ def edit
 				menu.choice :replace do
 
 					date = ask_date
-					@sch[date].each_with_index {|event, index| puts "#{index}: \n#{event}"}
+					display_date(date)
 					index = ask("Which event?   ", Integer) { |q| q.in = 0..@sch[date].length.to_i }
 					say "#{@sch[date][index]}"
 					
@@ -109,7 +112,7 @@ def edit
 					@sch.event_update(date, index, T(:event, binding))
 					
 					say "\n\nYour entry: #{date}\n"
-					@sch[date].each_with_index {|event, index| say "#{index}: \n#{event}"}
+					display_date(date)
 					
 					if agree("Edit? ", true)
 						edit
@@ -142,13 +145,13 @@ def view
 		
 		menu.choice :single_date do
 			date = ask_date
-			@sch[date].each_with_index {|event, index| say "#{index}: \n#{event}"}
+			display_date(date)
 		end
 	
 		menu.choice :today do
 			d = Time.now
 			date = d.strftime("%m/%d/%Y")
-			@sch[date].each_with_index {|event, index| say "#{index}: \n#{event}"}
+			display_date(date)
 		end
 		
 		menu.choice :back do
