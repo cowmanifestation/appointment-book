@@ -118,11 +118,11 @@ def edit
 						edit
 					end
 					
-				end	
-				
-				main
+				end
 				
 			end
+			
+			main
 			
 		end
 		
