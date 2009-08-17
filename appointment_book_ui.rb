@@ -57,18 +57,21 @@ def create_new
 		display_date(date)
 		
 		if agree("Edit? ", true)
-			edit
+			edit(date)
 		end
 		
 	main
 end
 
 
-def edit
+def edit(date = nil)
+  unless date
+    date = ask_date
+  end
 	choose do |menu|	
 	
 		menu.choice :delete do
-			date = ask_date
+			date
 			choose do |menu|
 				
 				menu.choice :all do
@@ -77,7 +80,8 @@ def edit
 				
 				menu.choice :single_event do
 					display_date(date)
-					index = ask("Which event?   ", Integer) { |q| q.in = 0..@sch[date].length.to_i }
+					index = ask("Which event?   ", Integer) { |q| 
+					q.in = 0..@sch[date].length.to_i }
 					@sch.remove(date, index)
 				end
 				
@@ -95,15 +99,17 @@ def edit
 				
 				menu.choice :replace do
 
-					date = ask_date
+					date
 					display_date(date)
-					index = ask("Which event?   ", Integer) { |q| q.in = 0..@sch[date].length.to_i }
+					index = ask("Which event?   ", Integer) { |q| 
+					q.in = 0..@sch[date].length.to_i - 1 }
+					#don't need to_i
 					say "#{@sch[date][index]}"
 					
 					#select date/time/details etc.
 					#Options: Add or replace.
 					
-					say "Please enter new details:  "
+					say "Please enter new details:\n "
 					event = ask("What? ") 
 				  time = ask("When? ")
 				  location = ask("Where? ")
@@ -115,7 +121,7 @@ def edit
 					display_date(date)
 					
 					if agree("Edit? ", true)
-						edit
+						edit(date)
 					end
 					
 				end
